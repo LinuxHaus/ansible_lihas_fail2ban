@@ -1,2 +1,11 @@
 ---
 # handlers file for lihas_fail2ban
+- name: Restart ssh
+  ansible.builtin.systemd_service:
+    name: ssh
+    state: restarted
+
+- name: Restart fail2ban
+  ansible.builtin.systemd_service:
+    name: fail2ban
+    state: restarted

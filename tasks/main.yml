@@ -9,6 +9,7 @@
     option: backend
     value: systemd
     backup: false
+    notify: Restart fail2ban
 - name: Create local-banaction
   community.general.ini_file:
     dest: /etc/fail2ban/jail.d/local-banaction.conf
@@ -17,6 +18,7 @@
     option: banaction
     value: "%(banaction_allports)s"
     backup: false
+    notify: Restart fail2ban
 
 ## set journald Logtarget
 #
@@ -28,6 +30,7 @@
     option: logtarget
     value: STDERR
     backup: false
+    notify: Restart fail2ban
 
 ## Defaults
 #
@@ -39,6 +42,7 @@
     option: findtime
     value: 1d
     backup: false
+    notify: Restart fail2ban
 - name: Add IPs to loacl-times.conf
   community.general.ini_file:
     dest: /etc/fail2ban/local-times.conf
@@ -47,6 +51,7 @@
     option: ignoreip
     value: "127.0.0.1/8 ::1 45.150.155.188/31 45.150.155.187"
     backup: false
+    notify: Restart fail2ban
 
 ## ssh
 #
@@ -58,6 +63,7 @@
     option: findtime
     value: 1d
     backup: false
+    notify: Restart ssh
 
 - name: Ssh LogLevel VERBOSEN
   ansible.builtin.lineinfile:
@@ -65,6 +71,7 @@
     line: LogLevel VERBOSE
     create: true
     mode: "0400"
+    notify: Restart ssh
 
 ## Apache config if /etc/apache2 exists
 # this will add configuration for apache2
@@ -79,15 +86,4 @@
     file: apache2_configure.yml
   when: apache2.stat.exists
 
-## Restart ssh&fail2ban
-#
-- name: Restart ssh
-  ansible.builtin.systemd_service:
-    name: ssh
-    state: restarted
-
-- name: Restart fail2ban
-  ansible.builtin.systemd_service:
-    name: fail2ban
-    state: restarted
 ...

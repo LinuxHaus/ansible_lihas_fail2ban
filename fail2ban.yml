@@ -2,5 +2,5 @@
 - hosts: '*'
   name: Fail2Ban Configuration
   roles:
-    lihas_fail2ban
+    - lihas_fail2ban
 ...
