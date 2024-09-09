@@ -1,0 +1,103 @@
+---
+- name: Appache block excessive 302/404
+  ansible.builtin.lineinfile:
+    create: true
+    mode: "0400"
+    path: /etc/fail2ban/filter.d/apache-404.conf
+    line: "{{ item.line }}"
+  loop:
+    - line: failregex = ^<HOST> - .* "(CONNECT|GET|POST|HEAD).*HTTP.*" (302|40[08]) .*$
+    - line: ignoreregex =.*(robots.txt|favicon.ico|jpg|png)
+
+- name: Configurate appache-404.conf
+  community.general.ini_file:
+    create: true
+    dest: /etc/fail2ban/jail.d/apache-404.conf
+    mode: "0400"
+    backup: false
+    section: apache-404
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  loop:
+    - option: "enable"
+      value: true
+    - option: port
+      value: http,https
+    - option: filter
+      value: apache-404
+    - option: logpath
+      value: "%(apache_access_log)s"
+    - option: bantime
+      value: 3600
+    - option: findtime
+      value: 1d
+    - option: maxretry
+      value: 10
+    - option: backend
+      value: auto
+
+- name: Configuarte local-apache.conf
+  community.general.ini_file:
+    create: true
+    dest: /etc/fail2ban/jail.d/local-apache.conf
+    mode: "0400"
+    backup: false
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  loop:
+    - section: apache-auth
+      option: enabled
+      value: true
+    - section: apache-badbots
+      option: enabled
+      value: true
+    - section: apache-noscript
+      option: enabled
+      value: true
+    - section: apache-overflows
+      option: enabled
+      value: true
+    - section: apache-nohome
+      option: enabled
+      value: true
+    - section: apache-botsearch
+      option: enabled
+      value: true
+    - section: apache-fakegooglebot
+      option: enabled
+      value: true
+    - section: apache-modsecurity
+      option: enabled
+      value: true
+    - section: apache-shellshock
+      option: enabled
+      value: true
+    - section: apache-auth
+      option: backend
+      value: auto
+    - section: apache-badbots
+      option: backend
+      value: auto
+    - section: apache-noscript
+      option: backend
+      value: auto
+    - section: apache-overflows
+      option: backend
+      value: auto
+    - section: apache-nohome
+      option: backend
+      value: auto
+    - section: apache-botsearch
+      option: backend
+      value: auto
+    - section: apache-fakegooglebot
+      option: backend
+      value: auto
+    - section: apache-modsecurity
+      option: backend
+      value: auto
+    - section: apache-shellshock
+      option: backend
+      value: auto
+...

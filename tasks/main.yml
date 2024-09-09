@@ -1,0 +1,93 @@
+---
+## set journald default source
+#
+- name: Create local-backend.conf
+  community.general.ini_file:
+    dest: /etc/fail2ban/jail.d/local-backend.conf
+    mode: "0400"
+    section: DEFAULT
+    option: backend
+    value: systemd
+    backup: false
+- name: Create local-banaction
+  community.general.ini_file:
+    dest: /etc/fail2ban/jail.d/local-banaction.conf
+    mode: "0400"
+    section: DEFAULT
+    option: banaction
+    value: "%(banaction_allports)s"
+    backup: false
+
+## set journald Logtarget
+#
+- name: Create fail2ban.local
+  community.general.ini_file:
+    dest: /etc/fail2ban/fail2ban.local
+    mode: "0400"
+    section: DEFAULT
+    option: logtarget
+    value: STDERR
+    backup: false
+
+## Defaults
+#
+- name: Create local-times.conf
+  community.general.ini_file:
+    dest: /etc/fail2ban/local-times.conf
+    mode: "0400"
+    section: DEFAULT
+    option: findtime
+    value: 1d
+    backup: false
+- name: Add IPs to loacl-times.conf
+  community.general.ini_file:
+    dest: /etc/fail2ban/local-times.conf
+    mode: "0400"
+    section: DEFAULT
+    option: ignoreip
+    value: "127.0.0.1/8 ::1 45.150.155.188/31 45.150.155.187"
+    backup: false
+
+## ssh
+#
+- name: Create section DEFAULT and option in local-ssh.conf
+  community.general.ini_file:
+    dest: /etc/fail2ban/local-ssh.conf
+    mode: "0400"
+    section: DEFAULT
+    option: findtime
+    value: 1d
+    backup: false
+
+- name: Ssh LogLevel VERBOSEN
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config.d/fail2ban.conf
+    line: LogLevel VERBOSE
+    create: true
+    mode: "0400"
+
+## Apache config if /etc/apache2 exists
+# this will add configuration for apache2
+# running it agian  WILL NOT remove the configuration when apache2 no longer exists on the server
+- name: Check if /etc/apache2 exists
+  ansible.builtin.stat:
+    path: /etc/apache2
+  register: apache2
+
+- name: 'Include play: apache2_configure.yml'
+  ansible.builtin.include_tasks:
+    file: apache2_configure.yml
+  when: apache2.stat.exists
+
+## Restart ssh&fail2ban
+#
+- name: Restart ssh
+  ansible.builtin.systemd_service:
+    name: ssh
+    state: restarted
+
+- name: Restart fail2ban
+  ansible.builtin.systemd_service:
+    name: fail2ban
+    state: restarted
+...
