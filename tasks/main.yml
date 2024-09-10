@@ -80,7 +80,7 @@
 # running it agian  WILL NOT remove the configuration when apache2 no longer exists on the server
 - name: Check if /etc/apache2 exists
   ansible.builtin.stat:
-    path: /etc/apache2
+    path: /var/log/apache2
   register: apache2
 
 - name: 'Include play: apache2_configure.yml'
