@@ -14,6 +14,7 @@ Requirements
 To run solo:
 
 ansible-galaxy install -r requirements.yml
+
 ansible-playbook -i localhost, fail2ban.yml
 
 Dependencies
