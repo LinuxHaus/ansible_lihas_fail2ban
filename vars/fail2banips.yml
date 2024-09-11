@@ -1,0 +1,4 @@
+##add ips you dont want to be blocked after several failed tries here
+##devide several IPs by [space]
+#
+ips: 127.0.0.1/8 ::1
