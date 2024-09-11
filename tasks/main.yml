@@ -1,4 +1,8 @@
 ---
+- name: Include variables
+  ansible.builtin.import_role:
+    name: lihas_variables
+  when: configspaces is not defined
 
 ## install fail2ban
 #
@@ -62,13 +66,18 @@
       hostvars[inventory_hostname][item]['config']['fail2ban']['ignoreip'] | default([]) }}
   loop: "{{ configspaces }}"
 
+- name: Display fail2ban ignore IPs
+  ansible.builtin.debug:
+    var: lihas_fail2ban_ignoreip
+    verbosity: 2
+
 - name: Add IPs to loacl-times.conf
   community.general.ini_file:
     dest: /etc/fail2ban/local-times.conf
     mode: "0400"
     section: DEFAULT
     option: ignoreip
-    value: "{{ lihas_fail2ban_ignoreip | default([]) }}"
+    value: "{{ lihas_fail2ban_ignoreip | default([]) | join(' ') }}"
     backup: false
   notify: Restart fail2ban
 
