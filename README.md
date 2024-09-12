@@ -16,9 +16,9 @@ Requirements
 
 To run solo:
 
->ansible-galaxy install -r requirements.yml
+    ansible-galaxy install -r requirements.yml
 >
->ansible-playbook -i localhost, fail2ban.yml
+    ansible-playbook -i localhost, fail2ban.yml
 
 Dependencies
 ------------
@@ -27,10 +27,10 @@ lihas_variables
 Example Playbook
 ----------------
 
->---
->- hosts: '*'
->  role: lihas_common
->...
+	---
+	- hosts: '*'
+	role: lihas_fail2ban
+	...
 
 License
 -------
