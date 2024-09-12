@@ -1,7 +1,7 @@
 ansible_lihas_fail2ban
 =========
 
-Configures fail2ban for debian servers.
+Configures fail2ban for debian servers
 
 - installs fail2ban
 - set journald default source
@@ -22,7 +22,7 @@ To run solo:
 
 Dependencies
 ------------
-lihas_variables
+- lihas_variables
 
 Example Playbook
 ----------------
