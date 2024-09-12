@@ -29,7 +29,7 @@ Example Playbook
 
 	---
 	- hosts: '*'
-	role: lihas_fail2ban
+	  role: lihas_fail2ban
 	...
 
 License
