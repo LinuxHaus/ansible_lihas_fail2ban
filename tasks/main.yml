@@ -71,7 +71,7 @@
     var: lihas_fail2ban_ignoreip
     verbosity: 2
 
-- name: Add IPs to loacl-times.conf
+- name: Add IPs to local-times.conf
   community.general.ini_file:
     dest: /etc/fail2ban/local-times.conf
     mode: "0400"
