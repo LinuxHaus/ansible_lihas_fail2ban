@@ -1,5 +1,5 @@
 ---
-- name: Appache block excessive 302/404
+- name: Apache block excessive 302/404
   ansible.builtin.lineinfile:
     create: true
     mode: "0400"
@@ -9,7 +9,7 @@
     - line: failregex = ^<HOST> - .* "(CONNECT|GET|POST|HEAD).*HTTP.*" (302|40[08]) .*$
     - line: ignoreregex =.*(robots.txt|favicon.ico|jpg|png)
 
-- name: Configurate appache-404.conf
+- name: Configure apache-404.conf
   community.general.ini_file:
     create: true
     dest: /etc/fail2ban/jail.d/apache-404.conf
@@ -36,7 +36,7 @@
     - option: backend
       value: auto
 
-- name: Configuarte local-apache.conf
+- name: Configure local-apache.conf
   community.general.ini_file:
     create: true
     dest: /etc/fail2ban/jail.d/local-apache.conf
