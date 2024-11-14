@@ -32,6 +32,12 @@ Example Playbook
 	  role: lihas_fail2ban
 	...
 
+Variables
+----------------
+* X.config.fail2ban.ignoreip: []
+    * X: string, use host or groupname
+    * []: list of ips to ignore
+
 License
 -------
 GNU General Public License v3.0
