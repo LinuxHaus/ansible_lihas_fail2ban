@@ -38,7 +38,7 @@
 #
 - name: Create fail2ban.local
   community.general.ini_file:
-    dest: /etc/fail2ban/fail2ban.local
+    dest: /etc/fail2ban/jail.d/logtarget.local
     mode: "0400"
     section: DEFAULT
     option: logtarget
@@ -50,7 +50,7 @@
 #
 - name: Create local-times.conf
   community.general.ini_file:
-    dest: /etc/fail2ban/local-times.conf
+    dest: /etc/fail2ban/jail.d/findtime.conf
     mode: "0400"
     section: DEFAULT
     option: findtime
@@ -73,7 +73,7 @@
 
 - name: Add IPs to local-times.conf
   community.general.ini_file:
-    dest: /etc/fail2ban/local-times.conf
+    dest: /etc/fail2ban/jail.d/ignoreip.conf
     mode: "0400"
     section: DEFAULT
     option: ignoreip
@@ -83,17 +83,7 @@
 
 ## ssh
 #
-- name: Create section DEFAULT and option in local-ssh.conf
-  community.general.ini_file:
-    dest: /etc/fail2ban/local-ssh.conf
-    mode: "0400"
-    section: DEFAULT
-    option: findtime
-    value: 1d
-    backup: false
-  notify: Restart ssh
-
-- name: Ssh LogLevel VERBOSEN
+- name: Ssh LogLevel VERBOSE
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config.d/fail2ban.conf
     line: LogLevel VERBOSE
