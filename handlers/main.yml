@@ -4,8 +4,10 @@
   ansible.builtin.systemd_service:
     name: ssh
     state: restarted
+  become: "{{ lihas_become }}"
 
 - name: Restart fail2ban
   ansible.builtin.systemd_service:
     name: fail2ban
     state: restarted
+  become: "{{ lihas_become }}"

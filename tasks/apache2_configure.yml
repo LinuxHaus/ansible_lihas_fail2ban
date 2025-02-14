@@ -8,6 +8,7 @@
   loop:
     - line: failregex = ^<HOST> - .* "(CONNECT|GET|POST|HEAD).*HTTP.*" (302|40[08]) .*$
     - line: ignoreregex =.*(robots.txt|favicon.ico|jpg|png)
+  become: "{{ lihas_become }}"
 
 - name: Configure apache-404.conf
   community.general.ini_file:
@@ -35,6 +36,7 @@
       value: 10
     - option: backend
       value: auto
+  become: "{{ lihas_become }}"
 
 - name: Configure local-apache.conf
   community.general.ini_file:
@@ -100,4 +102,5 @@
     - section: apache-shellshock
       option: backend
       value: auto
+  become: "{{ lihas_become }}"
 ...
