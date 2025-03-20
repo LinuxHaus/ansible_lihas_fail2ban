@@ -37,6 +37,8 @@ Variables
 * X.config.fail2ban.ignoreip: []
     * X: string, use host or groupname
     * []: list of ips to ignore
+* lihas_fail2ban_apache: boolean, default true
+    * disable fail2ban for apache
 
 License
 -------

@@ -127,6 +127,6 @@
 - name: 'Include play: apache2_configure.yml'
   ansible.builtin.include_tasks:
     file: apache2_configure.yml
-  when: apache2.stat.exists
+  when: lihas_fail2ban_apache | default(true) and apache2.stat.exists
 
 ...
